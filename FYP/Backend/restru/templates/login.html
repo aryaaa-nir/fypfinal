@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Wavy Login Form</title>
+  <!-- Link to Google Fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Asap" rel="stylesheet">
+  <!-- Embedded CSS styles -->
+  <style>
+    body {
+      background-color: #f45b69;
+      font-family: "Asap", sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* Styling for the login form */
+    .login {
+      overflow: hidden;
+      background-color: white;
+      padding: 40px 30px;
+      border-radius: 10px;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 400px;
+      transform: translate(-50%, -50%);
+      box-shadow: 5px 10px 10px rgba(2, 128, 144, 0.2);
+    }
+
+    /* Styling for the wavy background effect */
+    .login::before,
+    .login::after {
+      content: "";
+      position: absolute;
+      width: 600px;
+      height: 600px;
+      border-top-left-radius: 40%;
+      border-top-right-radius: 45%;
+      border-bottom-left-radius: 35%;
+      border-bottom-right-radius: 40%;
+      z-index: -1;
+    }
+
+    .login::before {
+      left: 40%;
+      bottom: -130%;
+      background-color: rgba(69, 105, 144, 0.15);
+      animation: wawes 6s infinite linear;
+    }
+
+    .login::after {
+      left: 35%;
+      bottom: -125%;
+      background-color: rgba(2, 128, 144, 0.2);
+      animation: wawes 7s infinite;
+    }
+
+    /* Styling for input fields */
+    .login input {
+      display: block;
+      border-radius: 5px;
+      font-size: 16px;
+      background: white;
+      width: calc(100% - 20px);
+      border: 0;
+      padding: 15px;
+      margin: 15px 0;
+    }
+
+    /* Styling for login button */
+    .login button {
+      cursor: pointer;
+      color: #fff;
+      font-size: 16px;
+      text-transform: uppercase;
+      width: calc(100% - 20px);
+      border: 0;
+      padding: 15px;
+      margin: 15px 0;
+      border-radius: 5px;
+      background-color: #f45b69;
+      transition: background-color 300ms;
+    }
+
+    /* Hover effect for login button */
+    .login button:hover {
+      background-color: #f24353;
+    }
+
+    /* Styling for the footer link */
+    a {
+      text-decoration: none;
+      color: rgba(255, 255, 255, 0.6);
+      position: absolute;
+      right: 10px;
+      bottom: 10px;
+      font-size: 12px;
+    }
+
+    /* Keyframes for the wavy background animation */
+    @keyframes wawes {
+      from {
+        transform: rotate(0);
+      }
+      to {
+        transform: rotate(360deg);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="login">
+    <!-- Login form -->
+    <form method="POST">
+      {% csrf_token %}
+      <input type="text" name="username" placeholder="Username">
+      <input type="password" name="password" placeholder="Password">
+      <button>Login</button>
+    </form>
+  </div>
+</body>
+</html>
