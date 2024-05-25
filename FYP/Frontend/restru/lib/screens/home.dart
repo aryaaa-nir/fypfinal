@@ -5,6 +5,7 @@ import 'package:restru/screens/carts.dart';
 import 'package:restru/screens/category.dart';
 import 'package:restru/screens/payment.dart';
 import 'package:restru/screens/profiles.dart';
+import 'package:restru/screens/rate_feedback.dart';
 // import 'package:restru/screens/rate_feedbback.dart';
 import 'package:restru/state/cartstate.dart';
 import 'package:restru/state/productstate.dart';
@@ -134,7 +135,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 SizedBox(
                   child: ElevatedButton.icon(
                     onPressed: () async {
-                      // Navigator.of(context).pushReplacementNamed(Ratefeed.routename);
+                      Navigator.of(context).pushReplacementNamed(ReviewScreen.routeName);
                     },
                     icon: Icon(
                       Icons.star,

@@ -45,7 +45,7 @@ class CartState with ChangeNotifier{
         "Authorization": "token $token",
       });
       var data = json.decode(response.body) as Map;
-      print(data);
+      // print(data);
       List<OrderModel> demo = [];
       if (data['error'] == false) {
         data['data'].forEach((element) {
@@ -54,7 +54,8 @@ class CartState with ChangeNotifier{
         });
         _oldorder = demo;
         notifyListeners();
-      } else {
+      } 
+      else {
         print(data['data']);
       }
     } catch (e) {
@@ -160,7 +161,7 @@ Future<bool> deletecart(int id) async {
       }
       return false;
     } catch (e) {
-      print("e ordercart");
+      // print("e ordercart");
       print(e);
 
       return false;

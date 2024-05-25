@@ -77,7 +77,8 @@ class _CategoryScreensState extends State<CategoryScreens> {
       ),
       body: product.isEmpty
           ? Center(
-              child: Text("No Product"),
+                       child: Text("No Profuct Found." ,
+            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),),
             )
           : ListView.builder(
               itemCount: product.length,

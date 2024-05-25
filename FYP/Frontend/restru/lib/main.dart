@@ -190,11 +190,10 @@ class MyApp extends StatelessWidget {
               ChangeNotifierProvider(create: (ctx) => UserState()),
               ChangeNotifierProvider(create: (ctx) => TableState()),
               ChangeNotifierProvider(create: (ctx) => CartState()),
-              ChangeNotifierProvider(create: (ctx) => OrderTrackingState()),
+              ChangeNotifierProvider(create: (ctx) => OrderTrackState()),
               ChangeNotifierProvider(create: (ctx) => ProfileState()),
               ChangeNotifierProvider(create: (ctx) => CategoryState()),
-
-              // ChangeNotifierProvider(create: (ctx) => RatefeedState()),
+              ChangeNotifierProvider(create: (ctx) => ReviewProvider()),
             ],
             child: MaterialApp(
               debugShowCheckedModeBanner: false,
@@ -217,7 +216,7 @@ class MyApp extends StatelessWidget {
                 OrderTracking.routeName: (ctx) => OrderTracking(),
                 OrderNew.routeName: (ctx) => OrderNew(),
                 PaymentScreen.routeName: (ctx) => PaymentScreen(),
-                // SubmitReviewScreen.routename: (ctx) => SubmitReviewScreen(),
+                ReviewScreen.routeName: (ctx) => ReviewScreen(),
                 // Profile.routeName:(ctx)=>Profile(),
                 CategoryScreens.routeName:(ctx)=>CategoryScreens(),
               },

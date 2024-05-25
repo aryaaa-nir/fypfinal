@@ -42,3 +42,4 @@ class ProfileState with ChangeNotifier {
     notifyListeners();
   }
 }
+

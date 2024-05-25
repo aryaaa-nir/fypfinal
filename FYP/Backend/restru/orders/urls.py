@@ -22,8 +22,8 @@ urlpatterns = [
     path('deletecart/', views.DeleteCart.as_view(), name='delete-cart-product-list'),
     path('ordernow/', views.OrderCreate.as_view(), name='order-now' ),
     path('review/', views.ReviewView.as_view(), name='review-list'),
-    # path('ordertrack/', views.OrderTrackListCreateView.as_view(), name='order-track-list'),
-    # path('orderTrack/<int:pk>/', views.OrderTrackRetrieveUpdateDestroyView.as_view(), name='order-track-detail'),
+    # path('review/', ReviewCreateView.as_view(), name='review-create'),
+    path('ordertrack/', views.OrderTrackView.as_view(), name='order-track'),
     path('profile/', views.UserProfileView.as_view(), name='profile'),
     path('category/', views.CategoryView.as_view()),
 

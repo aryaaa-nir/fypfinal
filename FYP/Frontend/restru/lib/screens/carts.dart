@@ -176,7 +176,8 @@ class CartScreens extends StatelessWidget {
           backgroundColor: Colors.red.shade900,
         ),
         body: Center(
-          child: Text("No Cart Found"),
+          child: Text("No Cart Found" ,
+            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),),
         ),
       );
     } else {

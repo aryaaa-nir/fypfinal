@@ -315,27 +315,32 @@ class UserProfileView(APIView):
 
 
 class ReviewView(APIView):
+    permission_classes = [IsAuthenticated]
+    authentication_classes = [TokenAuthentication]
+
     def post(self, request):
         serializer = ReviewSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.save(commit=True, user=request.user)
-            return Response({"error": False})
-        return Response({"error": True})
+            serializer.save(user=request.user)
+            response_msg = {"error": False, "message": "Review added successfully"}
+        else:
+            response_msg = {"error": True, "message": "Failed to add review", "details": serializer.errors}
+        return Response(response_msg)
     
-    
-# class OrderStatusView(APIView):
+# class ReviewCreateView(generics.CreateAPIView):
 #     permission_classes = [IsAuthenticated]
-#     authentication_classes = [TokenAuthentication]
+#     serializer_class = ReviewSerializer
 
-#     def get(self, request):
-#         user = request.user
-#         try:
-#             customer = Customer.objects.get(user=user)
-#             customer_serializer = CustomerSerializer(customer)
-#             response_msg = {"error": False, "data": customer_serializer.data}
-#         except Customer.DoesNotExist:
-#             response_msg = {"error": True, "data": "Customer not found"}
-#         return Response(response_msg)
+#     def perform_create(self, serializer):
+#         serializer.save(user=self.request.user)
+
+class OrderTrackView(generics.ListAPIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = OrderTrackSerializer
+
+    def get_queryset(self):
+        user = self.request.user
+        return OrderTrack.objects.filter(user=user).order_by('-created_at')
 
 # -------------------------------------ADMINNNNNN----------------------------------------
 def admin_login(request):

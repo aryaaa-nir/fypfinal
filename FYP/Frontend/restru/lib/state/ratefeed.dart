@@ -4,39 +4,38 @@ import 'package:http/http.dart' as http;
 import 'package:localstorage/localstorage.dart';
 import '../models/ratings.dart';
 
-class RatefeedState with ChangeNotifier {
-  List<Ratings> _ratings = [];
-  LocalStorage storage = new LocalStorage('usertoken');
 
-  List<Ratings> get ratings => _ratings;
+class ReviewProvider with ChangeNotifier {
+  final ReviewService _reviewService = ReviewService();
 
-  Future<void> submitRating(int rate, String comment) async {
-    String url = 'http://10.2.0.0:8000/review/';
+  Future<Map<String, dynamic>> postReview(String comment, double rating) async {
+    final response = await _reviewService.postReview(comment, rating);
+    notifyListeners();
+    return response;
+  }
+}
+
+class ReviewService {
+  final LocalStorage storage = LocalStorage('usertoken');
+  final String baseUrl = 'http://10.0.2.2:8000/review/';
+
+  Future<Map<String, dynamic>> postReview(String comment, double rating) async {
     var token = storage.getItem('token');
     try {
-      http.Response response = await http.post(
-        Uri.parse(url),
+      final response = await http.post(
+        Uri.parse(baseUrl),
         headers: {
-          "Content-Type": "application/json",
-          'Authorization': 'token $token',
+          "Authorization": "Token $token",
+          "Content-Type": "application/json"
         },
         body: json.encode({
-          "rating": rate,
-          "comment": comment,
+          'comment': comment,
+          'rating': rating,
         }),
       );
-      if (response.statusCode == 200) {
-        // Rating submitted successfully
-        // You can update the local ratings list or perform any other actions
-        notifyListeners();
-      } else {
-        // Failed to submit rating
-        throw Exception('Failed to submit rating');
-      }
+      return json.decode(response.body);
     } catch (e) {
-      // Handle errors
-      print("Error submitting rating: $e");
-      throw Exception('Failed to submit rating');
+      return {'error': true, 'message': 'Failed to post review'};
     }
   }
 }

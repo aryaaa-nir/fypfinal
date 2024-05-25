@@ -56,12 +56,12 @@ class CategoryState with ChangeNotifier {
     try {
       var token = storage.getItem('token');
       String url = 'http://10.0.2.2:8000/category/';
-      print("Fetching categories from: $url with token: $token"); // Debugging print
+      // print("Fetching categories from: $url with token: $token"); // Debugging print
       http.Response response = await http.get(Uri.parse(url), headers: {
         "Authorization": "token $token",
       });
       var data = json.decode(response.body) as List;
-      print("Category data received: $data"); // Debugging print
+      // print("Category data received: $data"); // Debugging print
       List<Category> temp = [];
       data.forEach((element) {
         Category category = Category.fromJson(element);
