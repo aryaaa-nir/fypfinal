@@ -208,7 +208,7 @@ class MyApp extends StatelessWidget {
                 RegisterScreen.routename: (context) => RegisterScreen(),
                 TableScreen.routeName: (ctx) => TableScreen(),
                 TableDetailsScreen.routeName: (ctx) => TableDetailsScreen(),
-                // Reservation.routeName: (ctx) => Reservation(),
+                Reservation.routeName: (ctx) => Reservation(),
                 ReservedScreens.routeName: (ctx) => ReservedScreens(),
                 CartScreens.routeName: (ctx) => CartScreens(),
                 OrderScreen.routeName: (ctx) => OrderScreen(),

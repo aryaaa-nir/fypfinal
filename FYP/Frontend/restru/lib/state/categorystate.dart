@@ -55,7 +55,7 @@ class CategoryState with ChangeNotifier {
   Future<void> getCategoryData() async {
     try {
       var token = storage.getItem('token');
-      String url = 'http://10.0.2.2:8000/category/';
+      String url = 'http://10.0.2.2:8000/categories/';
       // print("Fetching categories from: $url with token: $token"); // Debugging print
       http.Response response = await http.get(Uri.parse(url), headers: {
         "Authorization": "token $token",

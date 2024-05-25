@@ -46,6 +46,8 @@ class ProfileScreen extends StatelessWidget {
                   Text('Username: ${profile.user?.username ?? ''}', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.black)),
                   SizedBox(height: 16),
                   Text('Allergy: ${profile.allergy ?? ''}', style: TextStyle(fontSize: 18, color: Colors.black)),
+                  Text('Phone Number: ${profile.phone ?? ''}', style: TextStyle(fontSize: 18, color: Colors.black)),
+
                   SizedBox(height: 16),
                   // Add more profile details here
                 ],

@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:restru/screens/home.dart';
 import '../models/orders.dart';
 import '../state/cartstate.dart';
+import '../widgets/add_drawer.dart';
 
 class OrderScreen extends StatelessWidget {
   static const routeName = '/order-screen';
@@ -12,17 +13,10 @@ class OrderScreen extends StatelessWidget {
     final data = Provider.of<CartState>(context).oldorder;
 
     return Scaffold(
+        drawer: AppDrawer(),
       appBar: AppBar(
         title: Text("Order History"),
         backgroundColor: Colors.red.shade900,
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.of(context).pushReplacementNamed(
-              HomeScreen.routeName,
-            );
-          },
-        ),
       ),
       body: data == null
           ? Center(child: CircularProgressIndicator())

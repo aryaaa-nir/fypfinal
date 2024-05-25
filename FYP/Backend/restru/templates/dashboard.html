@@ -43,6 +43,17 @@ li {
 	--pink : #FF69B4;
 	--light-green :  #90EE90;
 	--green: #006400;
+	--dred : #8B0000;
+	--light-red : #9A2A2A;
+	--cyan : #00FFFF;
+	--lightblack: #454545;
+	--black: #000000;
+	--dbrown : #5C4033;
+	--brown: #988558;
+	
+
+
+
 }
 
 html {
@@ -373,7 +384,7 @@ body {
 
 
 
-#content main .box-info {
+/* #content main .box-info {
 	display: grid;
 	grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
 	grid-gap: 24px;
@@ -395,6 +406,37 @@ body {
 	display: flex;
 	justify-content: center;
 	align-items: center;
+} */
+
+#content main .box-info {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 24px;
+  margin-top: 36px;
+}
+
+#content main .box-info li {
+  padding: 24px;
+  background: var(--light);
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  grid-gap: 24px;
+}
+
+#content main .box-info li .bx {
+  width: 80px;
+  height: 80px;
+  border-radius: 10px;
+  font-size: 36px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Add this to make the grid wrap after 2 columns */
+#content main .box-info {
+  grid-auto-flow: row dense;
 }
 #content main .box-info li:nth-child(1) .bx {
 	background: var(--light-blue);
@@ -415,6 +457,22 @@ body {
 #content main .box-info li:nth-child(5) .bx {
 	background: var(--light-pink);
 	color: var(--pink);
+}
+#content main .box-info li:nth-child(7) .bx {
+	background: var(--lightblack);
+	color: var(--black);
+}
+#content main .box-info li:nth-child(6) .bx {
+	background: var(--brown);
+	color: var(--dbrown);
+}
+#content main .box-info li:nth-child(8) .bx {
+	background: var(--red);
+	color: var(--dred);
+}
+#content main .box-info li:nth-child(9) .bx {
+	background: var(--blue);
+	color: var(--cyan);
 }
 #content main .box-info li .text h3 {
 	font-size: 24px;
@@ -638,9 +696,20 @@ body {
 					<span class="text">Categories</span>
 				</a>
 			</li>
-			
+			<li>
+				<a href="{% url 'orders:tables' %}">
+					<i class='bx bx-table' ></i>
+					<span class="text">Tables</span>
+				</a>
+			</li>
 			<li>
 				<a href="{% url 'orders:product' %}">
+					<i class='bx bxs-package' ></i>
+					<span class="text">Products</span>
+				</a>
+			</li>
+			<li>
+				<a href="#">
 					<i class='bx bxs-cart-add' ></i>
 					<span class="text">Cart Products</span>
 				</a>
@@ -669,18 +738,8 @@ body {
 					<span class="text">Orders</span>
 				</a>
 			</li>
-			<li>
-				<a href="#">
-					<i class='bx bxs-package' ></i>
-					<span class="text">Products</span>
-				</a>
-			</li>
-			<li>
-				<a href="{% url 'orders:tables' %}">
-					<i class='bx bx-table' ></i>
-					<span class="text">Tables</span>
-				</a>
-			</li>
+			
+			
 			<li>
 				<a href="#">
 					<i class='bx bxs-book' ></i>
@@ -749,6 +808,13 @@ body {
 					</span>
 				</li>
 				<li>
+					<i class='bx bxs-group' ></i>
+					<span class="text">
+						<h3>{{total_customers }}</h3>
+						<p>Total Customers</p>
+					</span>
+				</li>
+				<li>
 					<i class='bx bxs-category' ></i>
 					<span class="text">
 						<h3>{{total_category}}</h3>
@@ -774,6 +840,27 @@ body {
 					<span class="text">
 						<h3>{{total_tables}}</h3>
 						<p>Total Table</p>
+					</span>
+				</li>
+				<li>
+					<i class='bx bxs-book' ></i>
+					<span class="text">
+						<h3>{{total_reserves}}</h3>
+						<p>Total Reserves</p>
+					</span>
+				</li>
+				<li>
+					<i class='bx bxs-bullseye' ></i>
+					<span class="text">
+						<h3>{{total_ordert}}</h3>
+						<p>Total Order Tracks</p>
+					</span>
+				</li>
+				<li>
+					<i class='bx bxs-comment' ></i>
+					<span class="text">
+						<h3>{{total_ordert}}</h3>
+						<p>Total Review</p>
 					</span>
 				</li>
 			</ul>

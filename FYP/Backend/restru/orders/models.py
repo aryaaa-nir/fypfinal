@@ -7,6 +7,7 @@ from django.core.validators import MaxValueValidator
 class Customer(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     allergy = models.CharField(max_length=100)
+    phone = models.CharField(max_length=13)
     # Other customer fields
 
     def __str__(self):

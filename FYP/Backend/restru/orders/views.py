@@ -17,7 +17,7 @@ from .forms import *
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from .serializers import UserSerializer
+# from .serializers import UserSerializer
 import logging
 logger = logging.getLogger(__name__)
 
@@ -44,7 +44,6 @@ class CategoryView(APIView):
         serializer = CategorySerializer(query, many=True)
         return Response(serializer.data)
 
-
 class TableView(APIView):
     permission_classes = [IsAuthenticated, ]
     authentication_classes = [TokenAuthentication, ]
@@ -65,6 +64,31 @@ class TableView(APIView):
 
 
 
+# class ReserveView(APIView):
+#     permission_classes = [IsAuthenticated, ]
+#     authentication_classes = [TokenAuthentication, ]
+
+#     def post(self, request):
+#         data = request.data.get('id')  # Correctly access 'id' from request.data
+#         try:
+#             table_obj = Table.objects.get(id=data)
+#             user = request.user
+#             single_reserved_table = Reserve.objects.filter(
+#                 user=user, table=table_obj).first()  # Simplify filter expression
+#             if single_reserved_table:
+#                 print("single_reserved_table")
+#                 ccc = single_reserved_table.isReserved
+#                 single_reserved_table.isReserved = not ccc
+#                 single_reserved_table.save()
+#             else:
+#                 Reserve.objects.create(table=table_obj, user=user, isReserved=True)
+#             response_msg = {'error': False}
+#         except Table.DoesNotExist:
+#             response_msg = {'error': True, 'message': 'Table does not exist'}
+#         except Exception as e:
+#             response_msg = {'error': True, 'message': str(e)}
+#         return Response(response_msg)
+
 class ReserveView(APIView):
     permission_classes = [IsAuthenticated, ]
     authentication_classes = [TokenAuthentication, ]
@@ -74,21 +98,27 @@ class ReserveView(APIView):
         try:
             table_obj = Table.objects.get(id=data)
             user = request.user
-            single_reserved_table = Reserve.objects.filter(
-                user=user, table=table_obj).first()  # Simplify filter expression
-            if single_reserved_table:
-                print("single_reserved_table")
-                ccc = single_reserved_table.isReserved
-                single_reserved_table.isReserved = not ccc
-                single_reserved_table.save()
+
+            # Check if the table is already reserved by any user
+            if Reserve.objects.filter(table=table_obj, isReserved=True).exists():
+                response_msg = {'error': True, 'message': 'Table is already reserved'}
             else:
-                Reserve.objects.create(table=table_obj, user=user, isReserved=True)
-            response_msg = {'error': False}
+                # If not reserved, check if this user has a reservation for this table
+                single_reserved_table = Reserve.objects.filter(user=user, table=table_obj).first()
+                if single_reserved_table:
+                    single_reserved_table.isReserved = not single_reserved_table.isReserved
+                    single_reserved_table.save()
+                else:
+                    Reserve.objects.create(table=table_obj, user=user, isReserved=True)
+                response_msg = {'error': False}
+
         except Table.DoesNotExist:
             response_msg = {'error': True, 'message': 'Table does not exist'}
         except Exception as e:
             response_msg = {'error': True, 'message': str(e)}
+        
         return Response(response_msg)
+
     
 
 # class ReserveResponseCreate(APIView):
@@ -98,12 +128,12 @@ class ReserveView(APIView):
 #     def post(self, request):
 #         try:
 #             data = request.data
-#             table_id = data['tableid']
+#             table_name = data['tablename']
 #             email = data['email']
 #             phone = data['phone']
 #             date = data['date']
 #             time = data['time']
-#             table_obj = Cart.objects.get(id=table_id)
+#             table_obj = Cart.objects.get(tname=table_name)
 #             table_obj.isComplit = True
 #             table_obj.save()
 #             ReserveResponse.objects.create(
@@ -136,14 +166,6 @@ class CustomerRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Customer.objects.all()
     serializer_class = CustomerSerializer
 
-class CategoryView(APIView):
-    permission_classes = [IsAuthenticated, ]
-    authentication_classes = [TokenAuthentication, ]
-
-    def get(self, request):
-        query = Category.objects.all()
-        serializer = CategorySerializer(query, many=True)
-        return Response(serializer.data)
 
 class CartView(APIView):
     permission_classes = [IsAuthenticated, ]
@@ -197,16 +219,16 @@ class AddToCart(APIView):
         try:
             if cart_cart:
                 this_product_in_cart = cart_cart.cartproduct_set.filter(
-                    product=product_obj)
-                if this_product_in_cart.exists():
+                    product=product_obj) #Checks if the product is already in the cart.
+                if this_product_in_cart.exists(): #If the product is already in the cart:
                     cartprod_uct = this_product_in_cart[0]
                     cartprod_uct.quantity += 1
                     cartprod_uct.subtotal += product_obj.price
                     cartprod_uct.save()
                     cart_cart.total += product_obj.price
                     cart_cart.save()
-                else:
-                    cart_product_new = CartProduct.objects.create(
+                else: #If the product is not in the cart
+                    cart_product_new = CartProduct.objects.create( #Creates a new cart product.
                         cart=cart_cart,
                         price=product_obj.price,
                         quantity=1,
@@ -215,9 +237,9 @@ class AddToCart(APIView):
                     cart_product_new.product.add(product_obj)
                     cart_cart.total += product_obj.price
                     cart_cart.save()
-            else:
-                cart = Cart.objects.create(user=request.user, total=0, isCompleted=False)
-                cart_product_new = CartProduct.objects.create(
+            else: #If the user has no incomplete cart
+                cart = Cart.objects.create(user=request.user, total=0, isCompleted=False) #Creates a new cart.
+                cart_product_new = CartProduct.objects.create(  #Creates a new cart product.
                     cart=cart,
                     price=product_obj.price,
                     quantity=1,
@@ -238,17 +260,17 @@ class DeleteCartProduct(APIView):
     permission_classes = [IsAuthenticated]
 
     def post(self, request):
-        cart_product_id = request.query_params.get('id')
-        if not cart_product_id:
+        cart_product_id = request.query_params.get('id') 
+        if not cart_product_id:    #Checks if the cart product ID is missing
             return Response({'error': 'CartProduct ID is required'}, status=status.HTTP_400_BAD_REQUEST)
         
         try:
             cart_product_obj = CartProduct.objects.get(id=cart_product_id)
             cart_cart = Cart.objects.filter(
-                user=request.user, isCompleted=False).first()
+                user=request.user, isCompleted=False).first() #Fetches the user's incomplete cart.
             if cart_cart:
-                cart_cart.total -= cart_product_obj.subtotal
-                cart_product_obj.delete()
+                cart_cart.total -= cart_product_obj.subtotal #Deducts the product's subtotal from the cart total.
+                cart_product_obj.delete()       #Deletes the cart product.
                 cart_cart.save()
                 response_msg = {'error': False}
             else:
@@ -265,7 +287,7 @@ class DeleteCart(APIView):
         authentication_classes = [TokenAuthentication, ]
 
         def post(self, request):
-            cart_id = request.query_params.get('id')
+            cart_id = request.query_params.get('id')  #Retrieves the cart ID from query parameters.
             if not cart_id:
                 return Response({'error': 'CartProduct ID is required'}, status=status.HTTP_400_BAD_REQUEST)
             try:
@@ -378,12 +400,19 @@ def dashboard(request):
     total_cart = Cart.objects.all().count()
     total_orders = Order.objects.all().count()
     total_tables = Table.objects.all().count()
-    # total_products = Product.objects.all().count()
+    total_customers = Customer.objects.all().count()
+    total_reserves = Reserve.objects.all().count()
+    total_ordert = OrderTrack.objects.all().count()
+    total_review = Review.objects.all().count()
     context = {'total_products': total_products,
                'total_category': total_category,
                'total_cart': total_cart,
                'total_orders': total_orders,
-               'total_tables': total_tables}
+               'total_tables': total_tables,
+               'total_customers': total_customers,
+               'total_reserves': total_reserves,
+               'total_review': total_review,
+               'total_ordert':total_ordert}
     return render(request, 'dashboard.html', context)
 
 def logout_view(request):
@@ -436,7 +465,7 @@ def products(request):
     pro = Product.objects.all()
     
     context = {'pro':pro}
-    return render(request, 'product.html', 'dashboard.html', context)
+    return render(request, 'product.html', context)
 
 
 def addproduct(request):

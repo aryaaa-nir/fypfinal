@@ -9,7 +9,7 @@ urlpatterns = [
     path('products/<int:pk>/', views.ProductRetrieveUpdateDestroyView.as_view(), name='product-detail'),
     path('customers/', views.CustomerListCreateView.as_view(), name='customer-list'),
     path('customers/<int:pk>/', views.CustomerRetrieveUpdateDestroyView.as_view(), name='customer-detail'),
-    path('categories/', views.CategoryView.as_view(), name='category-list'),
+    # path('categories/', views.CategoryView.as_view(), name='category-list'),
     path('login/', obtain_auth_token),
     path('register/', views.RegisterView.as_view()),
     path('table/', views.TableView.as_view(), name='table-list'),
@@ -25,7 +25,7 @@ urlpatterns = [
     # path('review/', ReviewCreateView.as_view(), name='review-create'),
     path('ordertrack/', views.OrderTrackView.as_view(), name='order-track'),
     path('profile/', views.UserProfileView.as_view(), name='profile'),
-    path('category/', views.CategoryView.as_view()),
+    path('categories/', views.CategoryView.as_view()),
 
     # path('profile/<int:pk>/', views.ProfileRetrieveUpdateDestroyView.as_view(), name='order-track-detail'),
 

@@ -1,19 +1,23 @@
 class Profile {
   int? id;
   String? allergy;
+  String? phone;
   User? user;
+  
 
-  Profile({this.id, this.allergy, this.user});
+  Profile({this.id, this.allergy, this.phone, this.user});
 
   Profile.fromJson(Map<String, dynamic> json)
       : id = json['id'],
         allergy = json['allergy'],
+        phone = json['phone'],
         user = json['user'] != null ? User.fromJson(json['user']) : null;
 
   Map<String, dynamic> toJson() {
     return {
       'id': id,
       'allergy': allergy,
+      'phone':phone,
       if (user != null) 'user': user!.toJson(),
     };
   }
